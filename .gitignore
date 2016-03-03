@@ -3,3 +3,12 @@ CloudPrefixTreeC.java
 RealTest.java
 ResearchTest1.java
 Tester.java
+src/Cache.java
+src/CList.java
+src/CloudBST.java
+src/CloudBSTC.java
+src/CloudTree.java
+src/CloudTreeC.java
+src/Constants.java
+src/NumGen.java
+src/WordGen.java
