@@ -23,10 +23,54 @@ public class TestClient {
 
     public void start(){
     	// Perform EC2 Trie tests
-    	performEC2TrieTest(10, 14, 150);
-        
+        performEC2TrieTest(200, 16, 1);
+    	
+    	// Perform Cloud Trie Test
+    	performCloudTrieTest(200,16,1);
     }
 
+    private static String[] generateSampleData(int noSamples, int sampleLength){
+        String [] output = new String[noSamples];
+        while(--noSamples >= 0){
+            char[] thisString = new char[sampleLength];
+            for(int i = 0; i < sampleLength; ++i){
+                thisString[i] = (char)('a' + ThreadLocalRandom.current().nextInt(0,26));
+            }
+            output[noSamples] = new String(thisString);
+        }
+        return output;
+    }
+    
+    private void performCloudTrieTest(int noSamples, int sampleSize, int noClients){
+    	System.out.println("Performing tests on Cloud Trie ...");		
+    	
+    	CloudPrefixTree thisTrie = null;
+    					
+    			try {
+    				thisTrie = new CloudPrefixTree( true, "testTrie2");
+    			} catch (Exception e) {
+    				// TODO Auto-generated catch block
+    				e.printStackTrace();
+    			}
+                String[] samples = generateSampleData(noSamples, sampleSize);
+
+                thisTrie.initTree();
+    			
+    			
+    			System.out.println("Testing put speed...");
+    			//  --------------------------- PUT -----------------------------------
+
+    			Long startTime = System.currentTimeMillis();
+    			for(int i = 0; i < samples.length; ++i) {
+    				thisTrie.insert(samples[i]);
+    			}
+    			Long finishTime = System.currentTimeMillis();
+    			thisTrie.closeTree();
+    	
+    			double rate = noSamples / ((finishTime - startTime) / 1000.0);
+    			System.out.println("Cloud Prefix Tree rate: " + rate);
+    }
+    
     private void performEC2TrieTest(int noSamples, int sampleSize, int noClients){
         System.out.println("-------------------- Testing Trie on EC2 Instance ---------------------------------------");
     	System.out.println("Sample Count: " + noSamples);
@@ -75,18 +119,6 @@ public class TestClient {
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         }
 
-        private String[] generateSampleData(int noSamples, int sampleLength){
-            String [] output = new String[noSamples];
-            while(--noSamples > 0){
-                char[] thisString = new char[sampleLength];
-                for(int i = 0; i < sampleLength; ++i){
-                    thisString[i] = (char)('a' + ThreadLocalRandom.current().nextInt(0,26));
-                }
-                output[noSamples] = new String(thisString);
-            }
-            return output;
-        }
-
         public double getPutRate(){return putRate;}
         public double getQueryRate(){return queryRate;}
         
@@ -97,8 +129,8 @@ public class TestClient {
             long startTime = 0, finishTime = 0, timeTaken = 0;
             
             
-            String[] putSamples = generateSampleData(noSamples, sampleLength);
-            String[] querySamples = generateSampleData(noSamples, sampleLength);
+            String[] putSamples = TestClient.generateSampleData(noSamples, sampleLength);
+            String[] querySamples = TestClient.generateSampleData(noSamples, sampleLength);
 
             try {
                 // ----------------------   put  -----------------------------
