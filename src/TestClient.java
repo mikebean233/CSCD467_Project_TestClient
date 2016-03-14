@@ -144,10 +144,6 @@ public class TestClient {
 
                 timeTaken = finishTime - startTime;
                 putRate = noSamples / ((timeTaken) / 1000.0);
-                //System.out.println("---------------- put -----------------------");
-                //System.out.println("samples: " + noSamples);
-                //System.out.println("rate: " + putRate + " samples per second");
-                // -------------------------------------------------------------
 
                 // ----------------------   query  -----------------------------
                 startTime = System.currentTimeMillis();
@@ -160,9 +156,7 @@ public class TestClient {
 
                 timeTaken = finishTime - startTime;
                 queryRate = noSamples / ((timeTaken) / 1000.0);
-                //System.out.println("---------------- query (new Samples) -----------------------");
-                //System.out.println("samples: " + noSamples);
-                //System.out.println("rate: " + putRate + " samples per second");
+
                 // --------------------------------------------------------------
                 printWriter.close();
                 thisSocket.close();
