@@ -71,7 +71,7 @@ public class TestCase{
 
     public void makeError(String problem){
         errorState_   = true;
-        description_ += ": ";
+        description_ += ": " + problem;
         noSamples_    = -1;
         sampleSize_   = -1;
         noThreads_    = -1;
